@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 
 interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'danger';
@@ -8,17 +8,13 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'md', children, onClick, disabled }, ref) => {
-    const className = `btn btn-${variant} btn-${size}`;
-    return (
-      <button ref={ref} className={className} onClick={onClick} disabled={disabled}>
-        {children}
-      </button>
-    );
-  }
-);
-
-Button.displayName = 'Button';
+function Button({ variant = 'primary', size = 'md', children, onClick, disabled, ref }: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
+  const className = `btn btn-${variant} btn-${size}`;
+  return (
+    <button ref={ref} className={className} onClick={onClick} disabled={disabled}>
+      {children}
+    </button>
+  );
+}
 
 export default Button;
