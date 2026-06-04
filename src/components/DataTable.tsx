@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 interface Column<T> {
   key: keyof T;
@@ -13,10 +13,7 @@ interface DataTableProps<T> {
   sortable?: boolean;
 }
 
-function DataTableInner<T extends Record<string, any>>(
-  { data, columns, onRowClick, sortable = false }: DataTableProps<T>,
-  ref: React.ForwardedRef<HTMLTableElement>
-) {
+function DataTable<T extends Record<string, any>>({ data, columns, onRowClick, sortable = false, ref }: DataTableProps<T> & { ref?: React.ForwardedRef<HTMLTableElement> }) {
   const sortedData = useMemo(() => {
     if (!sortable) return data;
     return [...data].sort((a, b) => {
@@ -49,9 +46,5 @@ function DataTableInner<T extends Record<string, any>>(
     </table>
   );
 }
-
-const DataTable = forwardRef(DataTableInner) as <T extends Record<string, any>>(
-  props: DataTableProps<T> & { ref?: React.ForwardedRef<HTMLTableElement> }
-) => React.ReactElement | null;
 
 export default DataTable;
