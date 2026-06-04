@@ -50,7 +50,7 @@ function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
           error={errors.password}
         />
-        <Button onClick={() => handleSubmit}>Login</Button>
+        <Button>Login</Button>
       </form>
     </div>
   );
