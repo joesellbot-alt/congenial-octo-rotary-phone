@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
+function getJwtSecret() {
+  return process.env.JWT_SECRET || 'dev-secret-change-in-production';
+}
 
 export function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -12,7 +14,7 @@ export function authMiddleware(req, res, next) {
   const token = authHeader.slice(7);
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, getJwtSecret());
     req.user = decoded;
     next();
   } catch (_error) {
@@ -23,7 +25,7 @@ export function authMiddleware(req, res, next) {
 export function generateToken(user) {
   return jwt.sign(
     { id: user.id, email: user.email, name: user.name },
-    JWT_SECRET,
+    getJwtSecret(),
     { expiresIn: '7d' }
   );
 }

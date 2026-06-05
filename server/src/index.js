@@ -1,8 +1,8 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { WebSocketServer } from 'ws';
 import { createServer } from 'http';
-import dotenv from 'dotenv';
 
 import { initDatabase } from './utils/database.js';
 import { authRouter } from './routes/auth.js';
@@ -12,8 +12,6 @@ import { settingsRouter } from './routes/settings.js';
 import { deployRouter } from './routes/deploy.js';
 import { authMiddleware } from './middleware/auth.js';
 import { setupWebSocket } from './utils/websocket.js';
-
-dotenv.config();
 
 const app = express();
 const server = createServer(app);

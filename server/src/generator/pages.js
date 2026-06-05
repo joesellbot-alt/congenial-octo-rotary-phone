@@ -122,7 +122,7 @@ export default function ${page.name}() {
       <div className="space-y-3">
         {items.map((item) => (
           <div key={item.id} className="p-4 bg-white rounded-lg border flex justify-between items-center">
-            <Link to={\`${page.route.replace('s', 's/')}\${item.id}\`} className="flex-1">
+            <Link to={\`${page.route}/\${item.id}\`} className="flex-1">
               <p className="font-medium">{item.name || item.title || item.id}</p>
               <p className="text-sm text-gray-500">{item.status || item.description || ''}</p>
             </Link>

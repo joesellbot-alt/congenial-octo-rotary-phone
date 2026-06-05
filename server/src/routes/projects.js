@@ -131,6 +131,14 @@ projectsRouter.delete('/:id', (req, res) => {
 projectsRouter.get('/:id/messages', (req, res) => {
   try {
     const db = getDb();
+    const project = db
+      .prepare('SELECT id FROM projects WHERE id = ? AND user_id = ?')
+      .get(req.params.id, req.user.id);
+
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
     const messages = db
       .prepare('SELECT * FROM messages WHERE project_id = ? ORDER BY created_at ASC')
       .all(req.params.id);

@@ -39,9 +39,13 @@ function generateEntityModel(entity) {
     })
     .join(',\n');
 
+  const validColumns = JSON.stringify(['id', ...entity.fields.map((f) => f.name), 'created_at', 'updated_at']);
+
   return `import { getDb } from '../lib/database.js';
 
 const TABLE = '${tableName}';
+const VALID_COLUMNS = ${validColumns};
+const VALID_ORDER = ['ASC', 'DESC'];
 
 export const ${entity.name} = {
   init() {
@@ -58,11 +62,14 @@ ${fieldDefs},
 
   list(filters = {}, { limit = 50, offset = 0, orderBy = 'created_at', order = 'DESC' } = {}) {
     const db = getDb();
+    const safeOrderBy = VALID_COLUMNS.includes(orderBy) ? orderBy : 'created_at';
+    const safeOrder = VALID_ORDER.includes(order.toUpperCase()) ? order.toUpperCase() : 'DESC';
     let query = \`SELECT * FROM \${TABLE}\`;
     const params = [];
     const conditions = [];
 
     for (const [key, value] of Object.entries(filters)) {
+      if (!VALID_COLUMNS.includes(key)) continue;
       conditions.push(\`\${key} = ?\`);
       params.push(value);
     }
@@ -70,7 +77,7 @@ ${fieldDefs},
     if (conditions.length > 0) {
       query += ' WHERE ' + conditions.join(' AND ');
     }
-    query += \` ORDER BY \${orderBy} \${order} LIMIT ? OFFSET ?\`;
+    query += \` ORDER BY \${safeOrderBy} \${safeOrder} LIMIT ? OFFSET ?\`;
     params.push(limit, offset);
 
     return db.prepare(query).all(...params);

@@ -7,7 +7,9 @@ import { generateToken } from '../middleware/auth.js';
 
 export const authRouter = Router();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
+function getJwtSecret() {
+  return process.env.JWT_SECRET || 'dev-secret-change-in-production';
+}
 
 authRouter.post('/register', async (req, res) => {
   try {
@@ -76,7 +78,7 @@ authRouter.get('/me', (req, res) => {
 
   try {
     const token = authHeader.slice(7);
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, getJwtSecret());
     res.json({ user: decoded });
   } catch (_error) {
     res.status(401).json({ message: 'Invalid token' });

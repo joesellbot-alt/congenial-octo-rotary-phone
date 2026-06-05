@@ -226,7 +226,7 @@ export async function handleWebhook(body, signature) {
 }
 `,
     'src/routes/payments.js': `import { Router } from 'express';
-import { createCheckoutSession } from '../lib/payments.js';
+import { createCheckoutSession, handleWebhook } from '../lib/payments.js';
 import { authMiddleware } from '../middleware/auth.js';
 
 const router = Router();
