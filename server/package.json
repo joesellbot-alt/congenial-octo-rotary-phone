@@ -1,0 +1,29 @@
+{
+  "name": "ai-app-builder-server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "build": "echo 'No build step needed for Node.js server'",
+    "lint": "eslint . --ext .js --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "uuid": "^9.0.1",
+    "ws": "^8.17.0",
+    "better-sqlite3": "^11.0.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.13",
+    "stripe": "^15.8.0",
+    "openai": "^4.47.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  }
+}
