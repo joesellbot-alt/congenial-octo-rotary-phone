@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -7,44 +7,40 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-const Modal = forwardRef<HTMLDivElement, ModalProps>(
-  ({ isOpen, onClose, title, children }, ref) => {
-    const overlayRef = useRef<HTMLDivElement>(null);
+function Modal({ isOpen, onClose, title, children, ref }: ModalProps & { ref?: React.Ref<HTMLDivElement> }) {
+  const overlayRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-          onClose();
-        }
-      };
-
-      if (isOpen) {
-        document.addEventListener('keydown', handleEscape);
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
       }
+    };
 
-      return () => {
-        document.removeEventListener('keydown', handleEscape);
-      };
-    }, [isOpen, onClose]);
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
 
-    if (!isOpen) return null;
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
 
-    return (
-      <div ref={overlayRef} className="modal-overlay" onClick={onClose}>
-        <div ref={ref} className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <div className="modal-header">
-            <h2>{title}</h2>
-            <button className="modal-close" onClick={onClose}>
-              &times;
-            </button>
-          </div>
-          <div className="modal-body">{children}</div>
+  if (!isOpen) return null;
+
+  return (
+    <div ref={overlayRef} className="modal-overlay" onClick={onClose}>
+      <div ref={ref} className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2>{title}</h2>
+          <button className="modal-close" onClick={onClose}>
+            &times;
+          </button>
         </div>
+        <div className="modal-body">{children}</div>
       </div>
-    );
-  }
-);
-
-Modal.displayName = 'Modal';
+    </div>
+  );
+}
 
 export default Modal;

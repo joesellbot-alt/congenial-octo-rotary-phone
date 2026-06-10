@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useImperativeHandle } from 'react';
+import React, { useRef, useImperativeHandle } from 'react';
 
 interface InputProps {
   label: string;
@@ -14,36 +14,32 @@ export interface InputHandle {
   clear: () => void;
 }
 
-const Input = forwardRef<InputHandle, InputProps>(
-  ({ label, type = 'text', placeholder, value, onChange, error }, ref) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+function Input({ label, type = 'text', placeholder, value, onChange, error, ref }: InputProps & { ref?: React.Ref<InputHandle> }) {
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    useImperativeHandle(ref, () => ({
-      focus: () => inputRef.current?.focus(),
-      clear: () => {
-        if (inputRef.current) {
-          inputRef.current.value = '';
-        }
-      },
-    }));
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current?.focus(),
+    clear: () => {
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
+    },
+  }));
 
-    return (
-      <div className="input-group">
-        <label>{label}</label>
-        <input
-          ref={inputRef}
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          className={error ? 'input-error' : ''}
-        />
-        {error && <span className="error-text">{error}</span>}
-      </div>
-    );
-  }
-);
-
-Input.displayName = 'Input';
+  return (
+    <div className="input-group">
+      <label>{label}</label>
+      <input
+        ref={inputRef}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        className={error ? 'input-error' : ''}
+      />
+      {error && <span className="error-text">{error}</span>}
+    </div>
+  );
+}
 
 export default Input;

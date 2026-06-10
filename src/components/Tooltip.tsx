@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { useState } from 'react';
 
 interface TooltipProps {
   content: string;
@@ -6,26 +6,22 @@ interface TooltipProps {
   children: React.ReactNode;
 }
 
-const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
-  ({ content, position = 'top', children }, ref) => {
-    const [isVisible, setIsVisible] = useState(false);
+function Tooltip({ content, position = 'top', children, ref }: TooltipProps & { ref?: React.Ref<HTMLDivElement> }) {
+  const [isVisible, setIsVisible] = useState(false);
 
-    return (
-      <div
-        ref={ref}
-        className="tooltip-wrapper"
-        onMouseEnter={() => setIsVisible(true)}
-        onMouseLeave={() => setIsVisible(false)}
-      >
-        {children}
-        {isVisible && (
-          <div className={`tooltip tooltip-${position}`}>{content}</div>
-        )}
-      </div>
-    );
-  }
-);
-
-Tooltip.displayName = 'Tooltip';
+  return (
+    <div
+      ref={ref}
+      className="tooltip-wrapper"
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+    >
+      {children}
+      {isVisible && (
+        <div className={`tooltip tooltip-${position}`}>{content}</div>
+      )}
+    </div>
+  );
+}
 
 export default Tooltip;
